@@ -1,3 +1,7 @@
+* {
+  letter-spacing: 1pt;
+}
+
 .app--container{
   display: flex;
   align-items: center;
@@ -5,24 +9,55 @@
 }
 
 .register--container{
+  width: 40vw;
+  max-width: 50vw;
   padding: 10px 20px;
   border: 3px solid black;
   border-radius: 5px;
   margin-top: 20px;
 }
 
+.register--container > * {
+  width: 80%;
+}
+
 .register--title{
+  font-size: 1.2rem;
   text-align: center;
   margin-bottom: 20px;
-  font-family: monospace;
+  font-family: 'Roboto', cursive;
 }
 
 .register--input{
   display: block;
-  padding: 7px 0;
+  padding: 12px 12px;
   margin: 10px auto;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+}
+
+.register--input::placeholder{
+  font-weight: lighter;
+  color: #888;
 }
 
 .register--button{
-  padding: 2px 5px;
+  width: 100%;
+  height: 40px;
+  margin-top: 12px;
+  padding: 0.12rem 0.23rem;
+  border: 3px solid #a3c;
+  border-radius: 12px;
+  font-family: 'Roboto', cursive;
+  font-weight: bolder;
+  font-size: 0.90rem;
+  color: #121212;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.register--button:hover {
+  border-color: black;
+  transition: .45s linear;
 }
