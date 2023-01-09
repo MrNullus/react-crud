@@ -1,41 +1,93 @@
-import { useState } from 'react';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Card from "./components/Cards";
 
-function App() {
+export default function App() {
+  const [values, setValues] = useState();
+  const [listCard, setListCard] = useState([]);
+  console.log(listCard);
+
+  const handleRegisterGame = () => {
+    axios.post("http://localhost:3001/register", {
+      name: values.name,
+      cost: values.cost,
+      category: values.category,
+    }).then(() => {
+      axios.post("http://localhost:3001/search", {
+        name: values.name,
+        cost: values.cost,
+        category: values.category,
+      }).then((response) => {
+        setListCard([
+          ...listCard,
+          {
+            id: response.data[0].id,
+            name: values.name,
+            cost: values.cost,
+            category: values.category,
+          },
+        ]);
+      });
+    });
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/getCards").then((response) => {
+      setListCard(response.data);
+    });
+  }, []);
+
+  const handleaddValues = (value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [value.target.name]: value.target.value,
+    }));
+  };
 
   return (
     <div className="app-container">
       <div className="register-container">
-        <h1>Scrim Shop</h1>
+        <h1 className="register-title">Doro-men Shop</h1>
 
-        <input 
-          className="register--input"
-          type="text" 
-          name="name" 
-          id="name" 
-          placeholder="Name"
+        <input
+          type="text"
+          name="name"
+          placeholder="Nome"
+          className="register-input"
+          onChange={handleaddValues}
         />
-        <input 
-          className="register--input"
-          type="text" 
-          name="cost" 
-          id="cost" 
+        <input
+          type="text"
           placeholder="Preço"
+          name="cost"
+          className="register-input"
+          onChange={handleaddValues}
         />
-        <input 
-          className="register--input"
-          type="text" 
-          name="category" 
-          id="category" 
+        <input
+          type="text"
           placeholder="Categoria"
+          name="category"
+          className="register-input"
+          onChange={handleaddValues}
         />
 
-        <button>
+        <button onClick={handleRegisterGame} className="register-button">
           Cadastrar
         </button>
       </div>
+
+      {listCard.map((val) => (
+        <Card
+          listCard={listCard}
+          setListCard={setListCard}
+          key={val.id}
+          id={val.id}
+          name={val.name}
+          cost={val.cost}
+          category={val.category}
+        />
+      ))}
     </div>
   );
 }
-
-export default App;
