@@ -1,67 +1,93 @@
-import { useState } from 'react';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Card from "./components/Cards";
 
-function App() {
-  const [ values, setValues ] = useState();
+export default function App() {
+  const [values, setValues] = useState();
+  const [listCard, setListCard] = useState([]);
+  console.log(listCard);
 
-  const handleChangeValues = ( value ) => {
-    console.log("NAME VALUE ==> ", value.target.name);
-    console.log("VALUE ==> ", value.target.value);
+  const handleRegisterGame = () => {
+    axios.post("http://localhost:3001/register", {
+      name: values.name,
+      cost: values.cost,
+      category: values.category,
+    }).then(() => {
+      axios.post("http://localhost:3001/search", {
+        name: values.name,
+        cost: values.cost,
+        category: values.category,
+      }).then((response) => {
+        setListCard([
+          ...listCard,
+          {
+            id: response.data[0].id,
+            name: values.name,
+            cost: values.cost,
+            category: values.category,
+          },
+        ]);
+      });
+    });
+  };
 
-    let input = { 
-      name: value.target.name, 
-      value: value.target.value 
-    };
+  useEffect(() => {
+    axios.get("http://localhost:3001/getCards").then((response) => {
+      setListCard(response.data);
+    });
+  }, []);
 
-    setValues(( preValues ) => ({
-      ...preValues,
-      [input.name]: input.value
+  const handleaddValues = (value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [value.target.name]: value.target.value,
     }));
-  }
-
-  const handleClickButton = () => {
-    console.log("VALUES ==> ", values);
-  }
+  };
 
   return (
-    <div className="app--container">
-      <div className="register--container">
-        <h1 className="register--title">Scrim Shop</h1>
+    <div className="app-container">
+      <div className="register-container">
+        <h1 className="register-title">Doro-men Shop</h1>
 
-        <input 
-          className="register--input"
-          type="text" 
-          name="name" 
-          id="name" 
-          placeholder="Name"
-          onChange={handleChangeValues}
+        <input
+          type="text"
+          name="name"
+          placeholder="Nome"
+          className="register-input"
+          onChange={handleaddValues}
         />
-        <input 
-          className="register--input"
-          type="text" 
-          name="cost" 
-          id="cost" 
+        <input
+          type="text"
           placeholder="Preço"
-          onChange={handleChangeValues}
+          name="cost"
+          className="register-input"
+          onChange={handleaddValues}
         />
-        <input 
-          className="register--input"
-          type="text" 
-          name="category" 
-          id="category" 
+        <input
+          type="text"
           placeholder="Categoria"
-          onChange={handleChangeValues}
+          name="category"
+          className="register-input"
+          onChange={handleaddValues}
         />
 
-        <button
-          className="register--button"
-          onClick={handleClickButton}
-        >
+        <button onClick={handleRegisterGame} className="register-button">
           Cadastrar
         </button>
       </div>
+
+      {listCard.map((val) => (
+        <Card
+          listCard={listCard}
+          setListCard={setListCard}
+          key={val.id}
+          id={val.id}
+          name={val.name}
+          cost={val.cost}
+          category={val.category}
+        />
+      ))}
     </div>
   );
 }
-
-export default App;

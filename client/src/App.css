@@ -2,13 +2,13 @@
   letter-spacing: 1pt;
 }
 
-.app--container{
+.app-container{
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.register--container{
+.register-container{
   width: 40vw;
   max-width: 50vw;
   padding: 10px 20px;
@@ -17,18 +17,18 @@
   margin-top: 20px;
 }
 
-.register--container > * {
+.register-container > * {
   width: 80%;
 }
 
-.register--title{
+.register-title{
   font-size: 1.2rem;
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Roboto', cursive;
 }
 
-.register--input{
+.register-input{
   display: block;
   padding: 12px 12px;
   margin: 10px auto;
@@ -37,12 +37,12 @@
   outline: none;
 }
 
-.register--input::placeholder{
+.register-input::placeholder{
   font-weight: lighter;
   color: #888;
 }
 
-.register--button{
+.register-button{
   width: 100%;
   height: 40px;
   margin-top: 12px;
@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.register--button:hover {
+.register-button:hover {
   border-color: black;
   transition: .45s linear;
 }
